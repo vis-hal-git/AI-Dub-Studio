@@ -1,7 +1,5 @@
 # 🎬 Video Dubbing Platform
 
-> LLM/AI Engineering Assignment 3 — Multi-speaker video translation and dubbing using LangChain + OpenAI
-
 ## Architecture Overview
 
 ```
