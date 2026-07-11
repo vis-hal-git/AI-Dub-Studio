@@ -14,14 +14,14 @@ class DubbingJob:
         video_path: str,
         source_language: LanguageCode,
         target_language: LanguageCode,
-        preserve_background_audio: bool = True,
+
         original_filename: str = "",
     ):
         self.job_id = job_id
         self.video_path = str(video_path)
         self.source_language = source_language
         self.target_language = target_language
-        self.preserve_background_audio = preserve_background_audio
+
         self.original_filename = original_filename
 
         # Status tracking

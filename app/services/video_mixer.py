@@ -27,7 +27,6 @@ class VideoMixer:
         video_path: str,
         audio_segments: List[SynthesizedSegment],
         original_audio_path: Path,
-        preserve_background: bool,
         job_id: str,
     ) -> Path:
         """
@@ -60,18 +59,7 @@ class VideoMixer:
             job_id=job_id,
         )
 
-        # Mix with original background audio if requested
-        if preserve_background:
-            mixed_audio_path = settings.TEMP_DIR / f"{job_id}_mixed_audio.wav"
-            await self._mix_with_background(
-                dubbed_audio=dubbed_audio_path,
-                original_audio=original_audio_path,
-                output_path=mixed_audio_path,
-                job_id=job_id,
-            )
-            final_audio_path = mixed_audio_path
-        else:
-            final_audio_path = dubbed_audio_path
+        final_audio_path = dubbed_audio_path
 
         # Mux audio with video
         await self._mux_video_audio(

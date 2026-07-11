@@ -90,7 +90,6 @@ class DubbingPipeline:
             video_path=job.video_path,
             audio_segments=audio_segments,
             original_audio_path=audio_path,
-            preserve_background=job.preserve_background_audio,
             job_id=job.job_id,
         )
         logger.info(f"[{job.job_id}] Video mixed: {output_path}")

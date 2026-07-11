@@ -70,7 +70,7 @@ async def create_dubbing_job(
     video: UploadFile = File(..., description="Video file to dub (max 10 minutes)"),
     source_language: LanguageCode = Form(LanguageCode.AUTO),
     target_language: LanguageCode = Form(LanguageCode.SPANISH),
-    preserve_background_audio: bool = Form(False),
+
 ):
     """
     Create a new video dubbing job.
@@ -118,7 +118,6 @@ async def create_dubbing_job(
         video_path=upload_path,
         source_language=source_language,
         target_language=target_language,
-        preserve_background_audio=preserve_background_audio,
         original_filename=video.filename,
     )
 
