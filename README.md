@@ -6,37 +6,43 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     FastAPI REST API                         │
+│                    Web Frontend (UI)                        │
+│             Vanilla HTML / CSS / JavaScript                 │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ HTTP Requests
+┌─────────────────────────▼───────────────────────────────────┐
+│                     FastAPI REST API                        │
 │  POST /api/v1/jobs   GET /api/v1/jobs/{id}   GET /download  │
 └─────────────────────────┬───────────────────────────────────┘
                           │
           ┌───────────────▼──────────────────┐
-          │        Dubbing Pipeline           │
-          │                                   │
-          │  1. AudioExtractor (ffmpeg)       │
-          │     └─ Extract WAV from MP4       │
-          │                                   │
-          │  2. Transcriber (Whisper API)     │
-          │     └─ Speech → timestamped text  │
-          │                                   │
-          │  3. SpeakerDiarizer (LangChain)   │
-          │     └─ GPT-4o identifies speakers │
-          │                                   │
-          │  4. Translator (LangChain)        │
-          │     └─ GPT-4o translates dialogue │
-          │                                   │
-          │  5. TTSSynthesizer (OpenAI TTS)   │
+          │        Dubbing Pipeline          │
+          │                                  │
+          │  1. AudioExtractor (ffmpeg)      │
+          │     └─ Extract WAV from MP4      │
+          │                                  │
+          │  2. Transcriber (Whisper API)    │
+          │     └─ Speech → timestamped text │
+          │                                  │
+          │  3. SpeakerDiarizer (LangChain)  │
+          │     └─ GPT-4o identifies speakers│
+          │                                  │
+          │  4. Translator (LangChain)       │
+          │     └─ GPT-4o translates dialogue│
+          │                                  │
+          │  5. TTSSynthesizer (OpenAI TTS)  │
           │     └─ Per-speaker voice synthesis│
-          │                                   │
-          │  6. VideoMixer (ffmpeg)           │
+          │                                  │
+          │  6. VideoMixer (ffmpeg)          │
           │     └─ Sync audio + mux to MP4   │
-          └───────────────────────────────────┘
+          └──────────────────────────────────┘
 ```
 
 ## Features
 
 | Requirement | Implementation |
 |---|---|
+| User-Friendly Web Interface | Responsive frontend to upload videos, track progress, and download results |
 | Videos up to 10 minutes | Duration validation via ffprobe; chunked Whisper transcription for large files |
 | Multiple speaker identification | LangChain + GPT-4o diarization using conversation context |
 | Accurate transcripts & translations | OpenAI Whisper + GPT-4o with dubbing-specific prompts |
@@ -44,7 +50,7 @@
 | Audio/video synchronization | Speed-adjusted TTS + ffmpeg adelay filter placement |
 | Processing status APIs | `/api/v1/jobs/{id}` with progress, stage, and speaker data |
 | Downloadable output | `/api/v1/jobs/{id}/download` returns dubbed MP4 |
-| Docker deployment | `Dockerfile` + `docker-compose.yml` |
+| Docker deployment | Multi-container setup via `docker-compose.yml` and optimized `Dockerfile` |
 | Automated tests | `pytest` with unit + integration tests |
 | LangChain | Used for diarization and translation chains |
 | OpenAI API | Whisper (STT), GPT-4o (NLP), TTS (speech synthesis) |
@@ -63,8 +69,9 @@ cp .env.example .env
 # 2. Build and start
 docker compose up --build
 
-# 3. API available at
-open http://localhost:8000/docs
+# 3. Access the platform
+# Web Interface (Frontend): http://localhost:3000
+# API Documentation: http://localhost:8000/docs
 ```
 
 ### Option B: Local Development
@@ -84,10 +91,16 @@ pip install -r requirements.txt
 cp .env.example .env
 # Edit .env — add OPENAI_API_KEY
 
-# 4. Start server
+# 4. Start the backend server
 ./scripts/start_dev.sh
 # OR
 uvicorn app.main:app --reload
+
+# 5. Start the frontend server (in a new terminal)
+python -m http.server 3000 --directory frontend
+
+# 6. Open your browser
+# Navigate to http://localhost:3000
 ```
 
 ---
@@ -286,14 +299,19 @@ video-dubbing/
 │       ├── translator.py       # LangChain translation
 │       ├── tts_synthesizer.py  # OpenAI TTS
 │       └── video_mixer.py      # ffmpeg video mixing
+├── frontend/
+│   ├── index.html              # Web interface layout
+│   ├── script.js               # Frontend API integration
+│   └── style.css               # Styling and animations
 ├── tests/
 │   ├── conftest.py             # Pytest fixtures
 │   └── test_api.py             # Test suite
 ├── scripts/
 │   ├── start_dev.sh            # Dev server launcher
 │   └── run_tests.sh            # Test runner
-├── Dockerfile
-├── docker-compose.yml
+├── Dockerfile                  # API Container definition
+├── docker-compose.yml          # Multi-container orchestration (API + Frontend)
+├── .dockerignore               # Excludes large files & venv from Docker image
 ├── requirements.txt
 ├── pytest.ini
 ├── .env.example
