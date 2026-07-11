@@ -24,9 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const resultUI = {
-        newJobBtn: document.getElementById('new-job-btn'),
-        transcriptPanel: document.getElementById('transcript-panel'),
-        transcriptList: document.getElementById('transcript-list')
+        downloadBtn: document.getElementById('download-btn'),
+        newJobBtn: document.getElementById('new-job-btn')
     };
 
     let pollingInterval = null;
@@ -151,14 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         switchSection('result');
                         resultUI.downloadBtn.href = `${API_BASE_URL}/jobs/${jobId}/download`;
                         resultUI.downloadBtn.download = '';
-                        
-                        // Render transcript if available
-                        if (data.translation && data.translation.length > 0) {
-                            renderTranscript(data.translation);
-                            resultUI.transcriptPanel.classList.remove('hidden');
-                        } else {
-                            resultUI.transcriptPanel.classList.add('hidden');
-                        }
                     }, 1500); // Wait a moment so user sees 100%
                 } else if (data.status === 'failed') {
                     showToast(`Job failed: ${data.error || 'Unknown error'}`, true);
@@ -209,8 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedFileName.classList.add('hidden');
         statusUI.speakersPanel.classList.add('hidden');
         statusUI.speakersList.innerHTML = '';
-        resultUI.transcriptPanel.classList.add('hidden');
-        resultUI.transcriptList.innerHTML = '';
         statusUI.progressFill.style.width = '0%';
         statusUI.progressText.textContent = '0%';
         submitBtn.disabled = false;
@@ -219,27 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Helpers
-    function renderTranscript(segments) {
-        resultUI.transcriptList.innerHTML = '';
-        segments.forEach(seg => {
-            const div = document.createElement('div');
-            div.className = 'transcript-item';
-            
-            const start = seg.start_time.toFixed(1);
-            const end = seg.end_time.toFixed(1);
-            
-            div.innerHTML = `
-                <div class="transcript-meta">
-                    <span class="transcript-speaker">${seg.speaker_id}</span>
-                    <span class="transcript-time">${start}s - ${end}s</span>
-                </div>
-                <div class="transcript-text">${seg.translated_text}</div>
-                <div class="transcript-original">${seg.original_text}</div>
-            `;
-            resultUI.transcriptList.appendChild(div);
-        });
-    }
-
     function switchSection(sectionId) {
         Object.values(sections).forEach(sec => sec.classList.add('hidden'));
         sections[sectionId].classList.remove('hidden');
