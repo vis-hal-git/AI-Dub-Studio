@@ -29,6 +29,21 @@ services:
     restart: unless-stopped
 
   # ─────────────────────────────────────────────
+  # Video Dubbing Frontend
+  # ─────────────────────────────────────────────
+  frontend:
+    image: nginx:alpine
+    container_name: video-dubbing-frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
   # Test runner (runs tests then exits)
   # ─────────────────────────────────────────────
   tests:
