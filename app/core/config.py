@@ -21,8 +21,8 @@ class Settings(BaseSettings):
     TTS_MODEL: str = "tts-1"
 
     # Processing limits
-    MAX_VIDEO_DURATION: int = 600  # 10 minutes in seconds
-    MAX_FILE_SIZE_MB: int = 500
+    MAX_VIDEO_DURATION: int =700  # 10 minutes in seconds
+    MAX_FILE_SIZE_MB: int = 700
     CHUNK_DURATION: int = 30  # seconds per audio chunk for processing
 
     # TTS voices (OpenAI voices for different speakers)
