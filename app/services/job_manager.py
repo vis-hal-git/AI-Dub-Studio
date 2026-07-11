@@ -27,7 +27,7 @@ class JobManager:
         video_path: Path,
         source_language: LanguageCode,
         target_language: LanguageCode,
-        preserve_background_audio: bool,
+
         original_filename: str,
     ) -> DubbingJob:
         """Create and store a new dubbing job."""
@@ -36,7 +36,7 @@ class JobManager:
             video_path=video_path,
             source_language=source_language,
             target_language=target_language,
-            preserve_background_audio=preserve_background_audio,
+
             original_filename=original_filename,
         )
         self._jobs[job_id] = job
