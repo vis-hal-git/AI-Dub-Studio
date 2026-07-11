@@ -475,6 +475,69 @@ input:checked + .slider:before {
     margin-top: 1rem;
 }
 
+/* Transcript Panel */
+.transcript-panel {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.transcript-panel h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.transcript-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.transcript-item {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.transcript-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.transcript-speaker {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.transcript-time {
+    font-family: monospace;
+}
+
+.transcript-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #e2e8f0;
+}
+
+.transcript-original {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 0.25rem;
+}
+
 /* Toast */
 .toast {
     position: fixed;
