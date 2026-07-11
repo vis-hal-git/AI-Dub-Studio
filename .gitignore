@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+ffmpeg.exe
+ffprobe.exe
+uploads/
+temp/
+outputs/
+*.mp4
+*.mp3
+*.wav
+scratch/
+.DS_Store

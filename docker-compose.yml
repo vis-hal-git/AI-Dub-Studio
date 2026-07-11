@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  # ─────────────────────────────────────────────
+  # Video Dubbing API
+  # ─────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: video-dubbing-api
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GPT_MODEL=gpt-4o
+      - TTS_MODEL=tts-1
+      - WHISPER_MODEL=whisper-1
+    volumes:
+      - dubbing-uploads:/tmp/video-dubbing/uploads
+      - dubbing-outputs:/tmp/video-dubbing/outputs
+      - dubbing-temp:/tmp/video-dubbing/temp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # Test runner (runs tests then exits)
+  # ─────────────────────────────────────────────
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: video-dubbing-tests
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-test-key}
+    command: >
+      sh -c "
+        echo 'Waiting for API to be ready...' &&
+        sleep 5 &&
+        python -m pytest tests/ -v --tb=short --asyncio-mode=auto
+      "
+    depends_on:
+      api:
+        condition: service_healthy
+    profiles:
+      - test
+
+volumes:
+  dubbing-uploads:
+  dubbing-outputs:
+  dubbing-temp:

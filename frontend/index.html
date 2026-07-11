@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Dubbing Studio</title>
+    <meta name="description" content="Multi-speaker video translation and dubbing platform">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <h1>AI Video <span>Dubbing</span></h1>
+            <p>Seamless multi-speaker video translation powered by AI.</p>
+        </header>
+
+        <section class="glass-panel" id="upload-section">
+            <form id="dubbing-form">
+                <div class="file-upload-wrapper" id="drop-zone">
+                    <input type="file" id="video-file" name="video" accept="video/mp4,video/x-m4v,video/*" required>
+                    <div class="upload-placeholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <p class="upload-title">Drag & drop your video here</p>
+                        <p class="upload-subtitle">or click to browse files (max 500MB)</p>
+                        <p id="selected-file-name" class="selected-file hidden"></p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="source-language">Source Language</label>
+                        <select id="source-language" name="source_language">
+                            <option value="auto">Auto Detect</option>
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ja">Japanese</option>
+                            <option value="zh">Chinese</option>
+                            <option value="ko">Korean</option>
+                            <option value="ar">Arabic</option>
+                            <option value="hi">Hindi</option>
+                            <option value="ru">Russian</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="target-language">Target Language</label>
+                        <select id="target-language" name="target_language">
+                            <option value="es" selected>Spanish</option>
+                            <option value="en">English</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ja">Japanese</option>
+                            <option value="zh">Chinese</option>
+                            <option value="ko">Korean</option>
+                            <option value="ar">Arabic</option>
+                            <option value="hi">Hindi</option>
+                            <option value="ru">Russian</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="toggle">
+                        <input type="checkbox" id="preserve-audio" name="preserve_background_audio" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="toggle-label">Preserve Background Audio</span>
+                </div>
+
+                <button type="submit" id="submit-btn" class="primary-btn">Start Dubbing</button>
+            </form>
+        </section>
+
+        <section class="glass-panel hidden" id="status-section">
+            <div class="status-header">
+                <h2>Processing Job</h2>
+                <span class="badge" id="job-status-badge">pending</span>
+            </div>
+            
+            <p id="current-stage" class="stage-text">Initializing...</p>
+
+            <div class="progress-container">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-stats">
+                    <span id="progress-percent">0%</span>
+                </div>
+            </div>
+
+            <div class="speakers-panel hidden" id="speakers-panel">
+                <h3>Speakers Detected</h3>
+                <ul id="speakers-list" class="speakers-list">
+                    <!-- Speakers injected here -->
+                </ul>
+            </div>
+        </section>
+
+        <section class="glass-panel hidden" id="result-section">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h2>Dubbing Complete!</h2>
+            <p>Your video has been successfully translated and dubbed.</p>
+            <a href="#" id="download-btn" class="primary-btn download-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download Dubbed Video
+            </a>
+            
+            <button id="new-job-btn" class="secondary-btn mt-4">Start New Job</button>
+        </section>
+        
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden"></div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
