@@ -1,4 +1,4 @@
-# 🎬 Video Dubbing Platform
+# 🎬 AI Dubbing Studio
 
 ## Architecture Overview
 
