@@ -80,7 +80,8 @@ docker compose up --build
 # 1. Install ffmpeg
 # macOS:   brew install ffmpeg
 # Ubuntu:  apt-get install ffmpeg
-# Windows: https://ffmpeg.org/download.html
+# Windows: Download from https://www.gyan.dev/ffmpeg/builds/ (get the release essentials zip). 
+#          Extract the folder, and add its `bin` directory to your System PATH environment variable.
 
 # 2. Install Python deps
 pip install -r requirements.txt
